@@ -9,6 +9,6 @@
 We should have an identifiable column such as a row number hence we 
 will use row number.
 
-'''SQL
+```SQL
 CREATE TABLE tech_layoffs_2019.layoffs_staging
 LIKE tech_layoffs_2019.layoffs;
