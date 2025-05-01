@@ -1,6 +1,6 @@
 # Welcome to my SQL Data Cleaning Project
 
-##Introduction
+## Introduction
 This project demonstrates a practical data cleaning process performed in MySQL on a dataset tracking technology sector layoffs. The primary goal was to transform the raw data into a reliable and consistent format suitable for analysis. Please find the dataset named layoffs.csv in the files above or go to https://www.kaggle.com/datasets/swaptr/layoffs-2022.
 
 
