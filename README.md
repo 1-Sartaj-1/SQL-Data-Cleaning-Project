@@ -1,7 +1,7 @@
 # Welcome to my SQL Data Cleaning Project
 
 ## Introduction
-This project demonstrates a practical data cleaning process performed in MySQL on a dataset tracking technology sector layoffs. The primary goal was to transform the raw data into a reliable and consistent format suitable for analysis. Please find the dataset named layoffs.csv in the files above or go to https://www.kaggle.com/datasets/swaptr/layoffs-2022.
+This project demonstrates a practical data cleaning process performed in MySQL (MYSQL Workbench) on a dataset tracking technology sector layoffs. The primary goal was to transform the raw data into a reliable and consistent format suitable for analysis. Please find the dataset named layoffs.csv in the files above or go to https://www.kaggle.com/datasets/swaptr/layoffs-2022.
 
 
 ## Requirements:
@@ -9,6 +9,8 @@ This project demonstrates a practical data cleaning process performed in MySQL o
 2. Standardize the data 
 3. Deal with null Values or blank values
 4. Remove columns or rows (if necessary) using a staging table
+
+## The Code Begins!
 
 It's advisable not to make changes directly in the raw data file, so we'll create a new staging file inside our database.
 ```sql
@@ -82,14 +84,14 @@ UPDATE new_layoffs_staging
 SET company = TRIM(company);
 ```
 
-For other columns as well, we can check if there are some entries that need to be taken care of, perhaps by TRIM or an unnecessary character etc. In this dataset, all entries look good.
+For other columns as well, we can check if there are some entries that need to be taken care of, perhaps by TRIM or an unnecessary character etc. After hecking distinct values for industry, location, and country, no significant variations requiring standardization were found in this specific dataset.
 ```sql
 SELECT  DISTINCT industry
 FROM new_layoffs_staging
 ORDER BY industry;
 ```
 
-Coming to the date column, we see that date is a text and not in date data structure (we can do that when we upload the file in our MySQL workspace) and that there are unnecessary timezone succeeding the date all with exactly same value.
+Coming to the date column, we see that date is a text and not in date data structure (we can do that when we upload the file in our MySQL workbench) and that there are unnecessary timezone succeeding the date all with exactly same value.
 ![Alt text](5.date-select.png)
 ![Alt text](4.Date-Formatting.png)
 
@@ -110,17 +112,16 @@ MODIFY COLUMN `date` DATE;
 ```
 ![Alt text](7.date-data-type-changed.png)
 
-Our purpose of removing duplicating data is done, hence we can DROP the row_num column.
+Our purpose of removing duplicating data is done, hence we can DROP the row_num column. No other columns or rows were necessary to remove for this cleaning stage.
 ```sql
 ALTER TABLE new_layoffs_staging
 DROP row_num;
 ```
-If we want, we can handle null values or empty spaces, the usual approach is to rename or convert any existing empty string to NULL data type or TRIM empty string and rename it to "Unknown". We can go column by column to find out which rows have these values.
+We can handle null values or empty spaces, the usual approach is to rename or convert any existing empty string to NULL data type or TRIM empty string and rename it to "Unknown". We can go column by column to find out which rows have these values.
 ```sql
 SELECT *
 FROM new_layoffs_staging
 WHERE percentage_laid_off IS NULL OR percentage_laid_off = '';
-
 
 SELECT industry,
 CASE
@@ -128,5 +129,12 @@ CASE
 	ELSE industry         
 END AS industry_cleaned
 FROM new_layoffs_staging;
+
+UPDATE new_layoffs_staging
+SET industry = NULL
+WHERE industry = '';
 ```
 We can and should do this for other columns as well.
+
+## Conclusion
+Following these data cleaning steps, the new_layoffs_staging table is now free of duplicates, contains standardized data formats, and is ready for further analysis.
