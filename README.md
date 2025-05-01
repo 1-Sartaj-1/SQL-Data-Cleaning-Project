@@ -92,8 +92,8 @@ ORDER BY industry;
 ```
 
 Coming to the date column, we see that date is a text and not in date data structure (we can do that when we upload the file in our MySQL workbench) and that there are unnecessary timezone succeeding the date all with exactly same value.
-![Alt text](5.date-select.png)
-![Alt text](4.Date-Formatting.png)
+
+![Alt text](5.date-select.png) ![Alt text](4.Date-Formatting.png)
 
 Now, using substring we trim the unwanted part of the data as well as alter the date column with DATE data type.
 ```sql
